@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Controller {
 
     private final Model model;
@@ -8,6 +10,8 @@ public class Controller {
         this.view = view;
     }
      public void User(){
-
+         Scanner sc = new Scanner(System.in);
+         InputNoteBook inputNoteBook = new InputNoteBook(view, sc);
+         inputNoteBook.InputNote();
      }
 }
