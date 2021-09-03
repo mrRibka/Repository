@@ -15,7 +15,7 @@ public class UtilityController {
         while( !(sc.hasNext() && (res = sc.next()).matches(regex))){
             view.PrintWrongInput(massage);
         }
-
         return res;
     }
+
 }
