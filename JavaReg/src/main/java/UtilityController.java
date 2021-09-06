@@ -17,5 +17,19 @@ public class UtilityController {
         }
         return res;
     }
-
+    Group InputStringValueWithScanner(String massage) {
+        String input;
+        Group[] groups = Group.values();
+        view.PrintInputString(massage);
+        while (sc.hasNext()) {
+            input = sc.next();
+            for (Group s : groups) {
+                if (input.matches(s.getGroup())) {
+                    return s;
+                }
+            }
+            view.PrintWrongInput(massage);
+        }
+        return Group.DEFAULT;
+    }
 }
