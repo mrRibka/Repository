@@ -12,6 +12,6 @@ public class Controller {
      public void User(){
          Scanner sc = new Scanner(System.in);
          InputNoteBook inputNoteBook = new InputNoteBook(view, sc);
-         inputNoteBook.InputNote();
+         inputNoteBook.InputLogin();
      }
 }

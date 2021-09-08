@@ -1,6 +1,7 @@
 public interface ConstantString {
     String INPUT_STRING_DATA = "input.string.data";
     String WRONG_INPUT_DATA = "input.wrong.data";
+    String NOT_UNIQUE_INPUT_DATA = "input.not.unique.input.data";
     String FIRST_NAME = "input.data.first.name";
     String LAST_NAME = "input.data.last.name";
     String PATRONYMIC = "input.data.patronymic";
@@ -10,6 +11,7 @@ public interface ConstantString {
     String FIRST_MOBILE_PHONE = "input.data.first.mobPhone";
     String E_MAIL = "input.data.e-mail";
     String SKYPE = "input.data.skype";
+    String LOGIN = "input.data.login";
 
 
     String REGEX_NAME = "regex.name.regexp";
@@ -28,4 +30,5 @@ public interface ConstantString {
     String REGEX_ADDRESS_STREET = "regex.address.street";
     String REGEX_ADDRESS_HOUSE_NUM = "regex.address.houseNum";
     String REGEX_ADDRESS_FLAT_NUM = "regex.address.flatNum";
+    String REGEX_LOGIN = "regex.login";
 }

@@ -29,4 +29,10 @@ public class View implements ConstantString{
                 bundle.getString(massage)
         ));
     }
+    public void PrintNotUniqueString(String massage){
+        printMassage(concatenationString(
+                bundle.getString(NOT_UNIQUE_INPUT_DATA),
+                bundle.getString(massage)
+        ));
+    }
 }
