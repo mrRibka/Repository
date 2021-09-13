@@ -3,8 +3,8 @@ import java.util.Objects;
 
 public final class Student {
     String name;
-    int age;
     String group;
+    int age;
 
     public Student(String name, int age, String group) {
         this.name = name;
@@ -14,7 +14,8 @@ public final class Student {
 
     @Override
     public boolean equals(Object object) {
-        if (this ==object) return true;
+        if (this ==object)
+            return true;
 
         if (object instanceof Student){
             Student student = (Student) object;
