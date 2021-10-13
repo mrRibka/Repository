@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import regformspring.regformspring.model.Role;
 
 @Configuration
 @EnableWebSecurity
@@ -32,19 +33,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/auth/register").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/auth/register").permitAll()
+                    .antMatchers("/cabinet/**", "/auth/cabinet").authenticated()
+                    .antMatchers("/cabinet/user").hasRole(Role.USER.name())
+                    .antMatchers("/cabinet/inspector").hasRole(Role.INSPECTOR.name())
+                    .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/auth/login").permitAll()
-                .defaultSuccessUrl("/auth/success")
+                    .formLogin()
+                    .loginPage("/auth/login").permitAll()
+                    .defaultSuccessUrl("/auth/cabinet")
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout","POST"))
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/auth/login");
+                    .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout","POST"))
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("/auth/login");
     }
 
     @Override
