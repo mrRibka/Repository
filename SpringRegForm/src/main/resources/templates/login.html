@@ -1,25 +1,30 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Login Customer</title>
+    <title>Login</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+
 </head>
 <body>
 <div class="container">
     <form class="form-signin" method="post" action="/auth/login">
-        <h2 class="form-signin-heading">Login</h2>
+        <h2 class="form-signin-heading" th:text="#{login}"></h2>
         <p>
-            <label for="username">Email</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Email" required>
+            <label for="username">[[#{email}]]</label>
+            <input type="text" id="username" name="username" class="form-control" th:placeholder="#{email}" required>
         </p>
         <p>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            <label for="password">[[#{password}]]</label>
+            <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required>
         </p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">[[#{sign.in}]]</button>
     </form>
-</div>
-<div>
-    <a href="/auth/register">Sing Up</a>
+    <form action="/auth/register">
+        <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{sign.up}"> </button>
+    </form>
 </div>
 </body>
 </html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <style>
+        #navbar {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            border: 2px solid #0066FF;
+            width: 100%;
+            text-align: right;
+            background-color: #33ADFF;
+        }
+        #navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            width: 100px;
+        }
+        #navbar li { display: inline; }
+    </style>
+</head>
+<body>
+    <ul id="navbar">
+        <li>
+            <a href="/auth/login" th:text="#{sign.in}"></a>
+        </li>
+        <li>
+            <a href="/auth/register" th:text="#{sign.up}"></a>
+        </li>
+        <li>
+            <select id="locales">
+                <option value=""></option>
+                <option value="en" th:text="#{lang.eng}"></option>
+                <option value="ru" th:text="#{lang.ru}"></option>
+            </select>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+            </script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#locales").change(function () {
+                        var selectedOption = $('#locales').val();
+                        if (selectedOption != ''){
+                            window.location.replace('?lang=' + selectedOption);
+                        }
+                    });
+                });
+            </script></li>
+    </ul>
+    <div style="text-align: center">
+        <h1 th:text="#{welcome}"></h1>
+    </div>
+</body>
+</html>

@@ -3,28 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
 <body>
-<h2>Registration</h2>
-    <form method="POST">
-        <p>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>
-        </p>
-        <p>
-            <label for="first_name">First name</label>
-            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First name" required>
-        </p>
-        <p>
-            <label for="last_name">Last name</label>
-            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last name" required>
-        </p>
-        <p>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <button type="submit"> Sing Up </button>
-    </form>
+<h2 th:text="#{registration}"></h2>
+    <div class="container">
+        <form method="POST">
+            <p>
+                <label for="username">[[#{email}]]</label>
+                <input type="text" id="username" name="username" class="form-control" th:placeholder="#{email}" required>
+            </p>
+            <p>
+                <label for="first_name">[[#{first.name}]]</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" th:placeholder="#{first.name}" required>
+            </p>
+            <p>
+                <label for="last_name">[[#{last.name}]]</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" th:placeholder="#{last.name}" required>
+            </p>
+            <p>
+                <label for="password">[[#{password}]]</label>
+                <input type="password" id="password" name="password" class="form-control" th:placeholder="#{password}" required>
+            </p>
+            <button class="btn btn-lg btn-primary btn-block" type="submit"> [[#{sign.up}]] </button>
+        </form>
+        <br>
+        <form action="/auth/login">
+            <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{sign.in}"> </button>
+        </form>
 
+    </div>
 </body>
 </html>
