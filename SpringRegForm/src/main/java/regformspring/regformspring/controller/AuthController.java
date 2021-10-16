@@ -42,7 +42,7 @@ public class AuthController {
         if (user.get().getRole().equals(Role.USER)){
             return "redirect:/cabinet/user";
         }else if (user.get().getRole().equals(Role.INSPECTOR)){
-            return "redirect:/cabinet/inspector";
+            return "redirect:/cabinet/inspector/show";
         }
         return auth.getName();
     }

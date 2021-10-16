@@ -1,6 +1,7 @@
 package regformspring.regformspring.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -19,13 +20,13 @@ public class Report {
     @Enumerated(value = EnumType.STRING)
     private ReportStatus status;
     @Column
-    private Date date;
+    private LocalDate date;
     public Report() {
     }
 
     public Report(String description) {
         this.status = ReportStatus.SENT;
-        this.date = new Date();
+        this.date = LocalDate.now();
         this.description = description;
     }
 
@@ -45,11 +46,11 @@ public class Report {
         this.description = description;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

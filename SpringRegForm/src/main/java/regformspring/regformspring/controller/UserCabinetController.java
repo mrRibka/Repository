@@ -30,7 +30,7 @@ public class UserCabinetController {
     }
 
     @PostMapping("/create")
-    public String getCreatePage(Model model){
+    public String postCreatePage(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepository.findByEmail(auth.getName());
 
@@ -48,5 +48,15 @@ public class UserCabinetController {
         report.setEmail(user.get().getEmail());
         reportRepository.save(report);
         return "user.cabinet";
+    }
+
+    @GetMapping("/create")
+    public String getCreatePage(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findByEmail(auth.getName());
+
+        Iterable<Report> reports = reportRepository.findAllByEmail(user.get().getEmail());
+        model.addAttribute("reports", reports);
+        return "user.cabinet.create";
     }
 }
