@@ -13,14 +13,28 @@ public class ReportService {
     @Autowired
     private ReportRepository reportRepository;
 
-    public void approveById(Long id) throws RuntimeException{
+    public Report approveById(Long id) throws RuntimeException{
         Report report = reportRepository.findById(id).orElseThrow();
         report.setStatus(ReportStatus.APPROVED);
-        this.reportRepository.save(report);
+        return report;
     }
-    public void unapproveById(Long id){
+    public Report unapproveById(Long id){
         Report report = reportRepository.findById(id).orElseThrow();
         report.setStatus(ReportStatus.UNAPPROVED);
-        this.reportRepository.save(report);
+        return report;
+    }
+
+    public Report getReportById(Long id){
+        return reportRepository.findById(id).orElseThrow();
+    }
+
+    public void saveReport(Report report){
+        reportRepository.save(report);
+    }
+
+    public Report changeDescriptionById(Long id, String description){
+        Report report = reportRepository.findById(id).orElseThrow();
+        report.setDescription(description);
+        return report;
     }
 }

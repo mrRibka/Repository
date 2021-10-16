@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th = "http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Show</title>
+    <title>Inspector cabinet</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -70,7 +70,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each = "el : ${reports}">
+            <tr th:each = "el:${reports}">
                 <td th:text="${el.author}" />
                 <td th:text="${el.description}" />
                 <td th:text="${el.status}" />
@@ -78,6 +78,7 @@
                 <td th:text="${el.email}" />
                 <td>
                     <a th:href="@{/cabinet/inspector/approve/{id} (id=${el.id})}" class="btn btn-primary">APPROVE</a>
+                    <a th:href="@{/cabinet/inspector/unapprove/{id} (id=${el.id})}" class="btn btn-danger">UNAPPROVE</a>
                 </td>
             </tr>
             </tbody>

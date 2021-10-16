@@ -5,10 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import regformspring.regformspring.model.Report;
 import regformspring.regformspring.model.User;
 import regformspring.regformspring.repository.ReportRepository;
@@ -42,7 +39,21 @@ public class InspectorCabinetController {
     }
     @GetMapping("/approve/{id}")
     public String approve(@PathVariable(value = "id") Long id){
-        reportService.approveById(id);
+        reportService.saveReport(reportService.approveById(id));
+        return "redirect:/cabinet/inspector/show";
+    }
+    @GetMapping("/unapprove/{id}")
+    public String unapprove(@PathVariable(value = "id") Long id, Model model){
+
+        model.addAttribute("report", reportService.getReportById(id));
+        return "inspector.unapprove";
+    }
+
+    @PostMapping("/saveReport")
+    public String saveReport(@RequestParam Long id,@RequestParam String description){
+
+        reportService.saveReport(reportService.unapproveById(id));
+        reportService.saveReport(reportService.changeDescriptionById(id, description));
         return "redirect:/cabinet/inspector/show";
     }
 }
