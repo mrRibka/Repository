@@ -6,6 +6,7 @@ import regformspring.regformspring.model.Report;
 import regformspring.regformspring.model.ReportStatus;
 import regformspring.regformspring.repository.ReportRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,4 +43,12 @@ public class ReportService {
         report.setDescription(description);
         return report;
     }
+    public List<Report> findAllByEmail(String email){
+        return reportRepository.findAllByEmail(email);
+    }
+
+    public List<Report> findAllByStatus(ReportStatus status){
+        return reportRepository.findAllByStatus(status);
+    }
+
 }
