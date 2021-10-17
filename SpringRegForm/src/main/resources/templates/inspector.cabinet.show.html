@@ -31,7 +31,7 @@
     <ul id="navbar">
         <li>
             <form action="/auth/logout" method="POST">
-                <button type="submit"> Logout </button>
+                <button type="submit" th:text="#{logout}">  </button>
             </form>
         </li>
         <li>
@@ -57,28 +57,30 @@
     <div style="text-align: center">
         <h1 th:text="#{reports.list}"></h1>
     </div>
-    <div>
+    <div class="container">
         <table border="1" class = "table table-striped table-responsive-md">
             <thead>
             <tr>
-                <th th:text="Author" />
-                <th th:text="Description" />
-                <th th:text="Status" />
-                <th th:text="Date" />
-                <th th:text="Email" />
-                <th th:text="Actions" />
+                <th th:text="#{author}" />
+                <th th:text="#{description}" />
+                <th th:text="#{type}" />
+                <th th:text="#{status}" />
+                <th th:text="#{date}" />
+                <th th:text="#{email}" />
+                <th th:text="#{actions}" />
             </tr>
             </thead>
             <tbody>
             <tr th:each = "el:${reports}">
                 <td th:text="${el.author}" />
                 <td th:text="${el.description}" />
+                <td th:text="${el.type}" />
                 <td th:text="${el.status}" />
                 <td th:text="${el.date} " />
                 <td th:text="${el.email}" />
                 <td>
-                    <a th:href="@{/cabinet/inspector/approve/{id} (id=${el.id})}" class="btn btn-primary">APPROVE</a>
-                    <a th:href="@{/cabinet/inspector/unapprove/{id} (id=${el.id})}" class="btn btn-danger">UNAPPROVE</a>
+                    <a th:href="@{/cabinet/inspector/approve/{id} (id=${el.id})}" class="btn btn-primary" th:text="#{approve}"></a>
+                    <a th:href="@{/cabinet/inspector/unapprove/{id} (id=${el.id})}" class="btn btn-danger"th:text="#{unapprove}"></a>
                 </td>
             </tr>
             </tbody>

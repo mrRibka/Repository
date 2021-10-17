@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th = "http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Inspector cabinet</title>
@@ -15,7 +15,7 @@
 
             <input type="text" th:field="${report.description}" class="form-control mb-4 col-4">
 
-            <button type="submit" class="btn btn-info col-2"> Update </button>
+            <button type="submit" class="btn btn-info col-2" th:text="#{save}"></button>
         </form>
     </div>
 </body>

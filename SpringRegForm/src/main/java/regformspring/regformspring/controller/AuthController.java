@@ -40,7 +40,7 @@ public class AuthController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepository.findByEmail(auth.getName());
         if (user.get().getRole().equals(Role.USER)){
-            return "redirect:/cabinet/user";
+            return "redirect:/cabinet/user/create";
         }else if (user.get().getRole().equals(Role.INSPECTOR)){
             return "redirect:/cabinet/inspector/show";
         }

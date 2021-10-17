@@ -23,6 +23,11 @@ public class ReportService {
         report.setStatus(ReportStatus.UNAPPROVED);
         return report;
     }
+    public Report sentById(Long id){
+        Report report = reportRepository.findById(id).orElseThrow();
+        report.setStatus(ReportStatus.SENT);
+        return report;
+    }
 
     public Report getReportById(Long id){
         return reportRepository.findById(id).orElseThrow();

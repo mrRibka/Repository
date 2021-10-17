@@ -1,26 +1,20 @@
 package regformspring.regformspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import regformspring.regformspring.model.Report;
-import regformspring.regformspring.model.User;
 import regformspring.regformspring.repository.ReportRepository;
 import regformspring.regformspring.repository.UserRepository;
 import regformspring.regformspring.security.ReportService;
 
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/cabinet/inspector")
 public class InspectorCabinetController {
     @Autowired
     public ReportRepository reportRepository;
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private ReportService reportService;
 
