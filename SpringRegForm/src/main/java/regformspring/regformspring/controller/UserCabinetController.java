@@ -79,8 +79,8 @@ public class UserCabinetController {
         return "redirect:/cabinet/user/create";
     }
 
-    @GetMapping("/filter/{id}")
-    public String filter(@PathVariable(value = "id") ReportStatus status, Model model){
+    @GetMapping("/filter/{status}")
+    public String filter(@PathVariable(value = "status") ReportStatus status, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepository.findByEmail(auth.getName());
 
