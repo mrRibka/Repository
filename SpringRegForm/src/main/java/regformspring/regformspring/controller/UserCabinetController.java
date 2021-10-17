@@ -78,4 +78,14 @@ public class UserCabinetController {
         reportService.saveReport(reportService.changeDescriptionById(id, description));
         return "redirect:/cabinet/user/create";
     }
+
+    @GetMapping("/filter/{id}")
+    public String filter(@PathVariable(value = "id") ReportStatus status, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findByEmail(auth.getName());
+
+        Iterable<Report> reports = reportRepository.findAllByEmailAndStatus(user.get().getEmail(), status);
+        model.addAttribute("reports", reports);
+        return "user.cabinet.create";
+    }
 }
