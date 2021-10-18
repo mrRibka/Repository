@@ -5,12 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import regformspring.regformspring.model.Report;
 import regformspring.regformspring.model.ReportStatus;
 import regformspring.regformspring.repository.ReportRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReportService {
@@ -21,20 +21,23 @@ public class ReportService {
         reportRepository.save(report);
     }
 
-    public Report approveById(Long id) throws RuntimeException{
+    @Transactional
+    public void approveById(Long id) throws RuntimeException{
         Report report = reportRepository.findById(id).orElseThrow();
         report.setStatus(ReportStatus.APPROVED);
-        return report;
+        reportRepository.save(report);
     }
-    public Report unapproveById(Long id){
+    @Transactional
+    public void unapproveById(Long id){
         Report report = reportRepository.findById(id).orElseThrow();
         report.setStatus(ReportStatus.UNAPPROVED);
-        return report;
+        reportRepository.save(report);
     }
-    public Report sentById(Long id){
+    @Transactional
+    public void sentById(Long id){
         Report report = reportRepository.findById(id).orElseThrow();
         report.setStatus(ReportStatus.SENT);
-        return report;
+        reportRepository.save(report);
     }
 
     public Report getReportById(Long id){
@@ -56,10 +59,6 @@ public class ReportService {
 
     public List<Report> findAllByEmailAndStatus(String email, ReportStatus status){
         return reportRepository.findAllByEmailAndStatus(email, status);
-    }
-
-    public List<Report> findAllByStatus(ReportStatus status){
-        return reportRepository.findAllByStatus(status);
     }
 
     public Page<Report> findPaginated(int pageNumber, int pageSize){

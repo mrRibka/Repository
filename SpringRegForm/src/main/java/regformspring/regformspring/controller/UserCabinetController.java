@@ -11,9 +11,9 @@ import regformspring.regformspring.model.Report;
 import regformspring.regformspring.model.ReportStatus;
 import regformspring.regformspring.model.Type;
 import regformspring.regformspring.model.User;
-import regformspring.regformspring.repository.ReportRepository;
 import regformspring.regformspring.repository.UserRepository;
 import regformspring.regformspring.security.ReportService;
+import regformspring.regformspring.security.UserDetailsServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,14 +22,14 @@ import java.util.Optional;
 @RequestMapping("/cabinet/user")
 public class UserCabinetController {
     @Autowired
-    private UserRepository userRepository;
+    private UserDetailsServiceImpl userDetailsService;
     @Autowired
     private ReportService reportService;
 
     @PostMapping("/createRep")
     public String create(@RequestParam String description, @RequestParam String type){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepository.findByEmail(auth.getName());
+        Optional<User> user = userDetailsService.findByEmail(auth.getName());
 
         Report report = new Report(description, Type.valueOf(type));
         report.setAuthor(user.get().getFirstName(), user.get().getLastName());
@@ -45,23 +45,15 @@ public class UserCabinetController {
 
     @GetMapping("/change/{id}")
     public String change(@PathVariable(value = "id") Long id, Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepository.findByEmail(auth.getName());
-        if (reportService.getReportById(id).getStatus() == ReportStatus.UNAPPROVED){
-            model.addAttribute("report", reportService.getReportById(id));
-            return "user.unapprove";
-        }
-
-        Iterable<Report> reports = reportService.findAllByEmail(user.get().getEmail());
-        model.addAttribute("reports", reports);
-        return "redirect:/cabinet/user/create";
+        model.addAttribute("report", reportService.getReportById(id));
+        return "user.unapprove";
     }
 
     @PostMapping("/saveReport")
     public String saveReport(@RequestParam Long id,@RequestParam String description){
 
-        reportService.saveReport(reportService.sentById(id));
-        reportService.saveReport(reportService.changeDescriptionById(id, description));
+        reportService.sentById(id);
+        reportService.changeDescriptionById(id, description);
         return "redirect:/cabinet/user/create";
     }
 
@@ -73,7 +65,7 @@ public class UserCabinetController {
     @GetMapping("/create/{pageNumber}")
     public String findPaginatedByEmail(@PathVariable(value = "pageNumber") int pageNumber, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepository.findByEmail(auth.getName());
+        Optional<User> user = userDetailsService.findByEmail(auth.getName());
         int pageSize = 4;
 
         Page<Report> page = reportService.findPaginatedByEmail(pageNumber, pageSize, user.get().getEmail());
@@ -91,7 +83,7 @@ public class UserCabinetController {
     @GetMapping("/filter/{pageNumber}/{status}")
     public String findPaginatedByEmailAndStatus(@PathVariable(value = "status") ReportStatus status, @PathVariable(value = "pageNumber") int pageNumber, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepository.findByEmail(auth.getName());
+        Optional<User> user = userDetailsService.findByEmail(auth.getName());
         int pageSize = 4;
 
         Page<Report> page = reportService.findPaginatedByEmailAndStatus(pageNumber, pageSize, user.get().getEmail(), status);

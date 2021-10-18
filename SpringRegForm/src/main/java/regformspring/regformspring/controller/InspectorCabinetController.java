@@ -2,6 +2,7 @@ package regformspring.regformspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class InspectorCabinetController {
 
     @GetMapping("/approve/{id}")
     public String approve(@PathVariable(value = "id") Long id){
-        reportService.saveReport(reportService.approveById(id));
+        reportService.approveById(id);
         return "redirect:/cabinet/inspector/show";
     }
 
@@ -39,8 +40,8 @@ public class InspectorCabinetController {
     @PostMapping("/saveReport")
     public String saveReport(@RequestParam Long id,@RequestParam String description){
 
-        reportService.saveReport(reportService.unapproveById(id));
-        reportService.saveReport(reportService.changeDescriptionById(id, description));
+        reportService.unapproveById(id);
+        reportService.changeDescriptionById(id, description);
         return "redirect:/cabinet/inspector/show";
     }
 

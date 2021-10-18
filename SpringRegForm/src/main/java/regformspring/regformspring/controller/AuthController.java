@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import regformspring.regformspring.model.Role;
 import regformspring.regformspring.model.Status;
 import regformspring.regformspring.model.User;
-import regformspring.regformspring.repository.UserRepository;
+import regformspring.regformspring.security.UserDetailsServiceImpl;
 
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ public class AuthController {
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    private UserRepository userRepository;
+    private UserDetailsServiceImpl userDetailsService;
 
     @GetMapping("/login")
     public String getLoginPage(){
@@ -38,7 +38,7 @@ public class AuthController {
     public String getCabinetPage(){
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepository.findByEmail(auth.getName());
+        Optional<User> user = userDetailsService.findByEmail(auth.getName());
         if (user.get().getRole().equals(Role.USER)){
             return "redirect:/cabinet/user/create";
         }else if (user.get().getRole().equals(Role.INSPECTOR)){
@@ -52,13 +52,13 @@ public class AuthController {
             (@RequestParam String username,@RequestParam String first_name,
              @RequestParam String last_name, @RequestParam String password){
 
-        Optional<User> userFromDb = userRepository.findByEmail(username);
+        Optional<User> userFromDb = userDetailsService.findByEmail(username);
         if(userFromDb != null){
             return "register";
         }
         User user = new User(username, password, first_name, last_name, Role.USER, Status.ACTIVE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userDetailsService.save(user);
         return "redirect:/auth/login";
     }
 }
