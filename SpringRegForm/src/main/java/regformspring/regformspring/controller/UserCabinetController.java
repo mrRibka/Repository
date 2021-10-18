@@ -1,6 +1,7 @@
 package regformspring.regformspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import regformspring.regformspring.repository.ReportRepository;
 import regformspring.regformspring.repository.UserRepository;
 import regformspring.regformspring.security.ReportService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,15 +28,13 @@ public class UserCabinetController {
     @Autowired
     private ReportService reportService;
 
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     public String postCreatePage(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepository.findByEmail(auth.getName());
 
-        Iterable<Report> reports = reportRepository.findAllByEmail(user.get().getEmail());
-        model.addAttribute("reports", reports);
-        return "user.cabinet.create";
-    }
+        return findPaginated(1, model);
+    }*/
 
     @PostMapping("/createRep")
     public String create(@RequestParam String description, @RequestParam String type){
@@ -44,17 +44,12 @@ public class UserCabinetController {
         report.setAuthor(user.get().getFirstName(), user.get().getLastName());
         report.setEmail(user.get().getEmail());
         reportRepository.save(report);
-        return "user.cabinet";
+        return "redirect:/cabinet/user/create";
     }
 
     @GetMapping("/create")
     public String getCreatePage(Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepository.findByEmail(auth.getName());
-
-        Iterable<Report> reports = reportRepository.findAllByEmail(user.get().getEmail());
-        model.addAttribute("reports", reports);
-        return "user.cabinet.create";
+        return findPaginatedByEmail(1, model);
     }
 
     @GetMapping("/change/{id}")
@@ -81,11 +76,43 @@ public class UserCabinetController {
 
     @GetMapping("/filter/{status}")
     public String filter(@PathVariable(value = "status") ReportStatus status, Model model){
+        return findPaginatedByEmailAndStatus( status,1, model);
+    }
+
+    @GetMapping("/create/{pageNumber}")
+    public String findPaginatedByEmail(@PathVariable(value = "pageNumber") int pageNumber, Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepository.findByEmail(auth.getName());
+        int pageSize = 4;
 
-        Iterable<Report> reports = reportRepository.findAllByEmailAndStatus(user.get().getEmail(), status);
+        Page<Report> page = reportService.findPaginatedByEmail(pageNumber, pageSize, user.get().getEmail());
+        List<Report> reports = page.getContent();
+
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
         model.addAttribute("reports", reports);
+        model.addAttribute("status", ReportStatus.UNAPPROVED);
+
         return "user.cabinet.create";
+    }
+
+    @GetMapping("/filter/{pageNumber}/{status}")
+    public String findPaginatedByEmailAndStatus(@PathVariable(value = "status") ReportStatus status, @PathVariable(value = "pageNumber") int pageNumber, Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findByEmail(auth.getName());
+        int pageSize = 4;
+
+        Page<Report> page = reportService.findPaginatedByEmailAndStatus(pageNumber, pageSize, user.get().getEmail(), status);
+        List<Report> reports = page.getContent();
+
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("status", status);
+        model.addAttribute("statusUNAPPROVED", ReportStatus.UNAPPROVED);
+        model.addAttribute("reports", reports);
+
+        return "user.cabinet.filter";
     }
 }

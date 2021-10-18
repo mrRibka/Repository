@@ -96,11 +96,35 @@
                 </td>
                 <td th:text="${el.date}" />
                 <td>
-                    <a th:href="@{/cabinet/user/change/{id} (id=${el.id})}" class="btn btn-primary" th:text="#{change}" />
+                    <a th:if="${el.status == status}" th:href="@{/cabinet/user/change/{id} (id=${el.id})}" class="btn btn-primary" th:text="#{change}" />
+                    <p th:unless="${el.status == status}" class="btn btn-primary" th:text="#{change}" />
                 </td>
             </tr>
             </tbody>
         </table>
+
+        <div th:if = "${totalPages > 1}">
+            <div class = "row col-sm-10">
+                <div class = "col-sm-4">
+                    <span th:text="#{total.reports} + ${totalItems}"></span>
+                </div>
+                <div class = "col">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}" th:href="@{'/cabinet/user/create/' + ${i}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
+					</span>
+                </div>
+                <div class = "col-sm-2">
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/cabinet/user/create/' + ${currentPage + 1}}" th:text="#{next}"></a>
+                    <span th:unless="${currentPage < totalPages}" th:text="#{next}"></span>
+                </div>
+
+                <div class="col-sm-2">
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/cabinet/user/create/' + ${totalPages}}" th:text="#{last}"></a>
+                    <span th:unless="${currentPage < totalPages}" th:text="#{last}"></span>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

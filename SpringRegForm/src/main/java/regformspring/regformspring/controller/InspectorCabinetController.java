@@ -1,6 +1,7 @@
 package regformspring.regformspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import regformspring.regformspring.repository.ReportRepository;
 import regformspring.regformspring.repository.UserRepository;
 import regformspring.regformspring.security.ReportService;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,28 +22,19 @@ import java.util.Optional;
 @RequestMapping("/cabinet/inspector")
 public class InspectorCabinetController {
     @Autowired
-    public ReportRepository reportRepository;
-    @Autowired
     private ReportService reportService;
-
-/*    @PostMapping("/show")
-    public String postShowPage(Model model){
-        Iterable<Report> reports = reportRepository.findAll();
-        model.addAttribute("reports", reports);
-        return "inspector.cabinet.show";
-    }*/
 
     @GetMapping("/show")
     public String getShowPage(Model model){
-        Iterable<Report> reports = reportRepository.findAll();
-        model.addAttribute("reports", reports);
-        return "inspector.cabinet.show";
+        return findPaginated(1, model);
     }
+
     @GetMapping("/approve/{id}")
     public String approve(@PathVariable(value = "id") Long id){
         reportService.saveReport(reportService.approveById(id));
         return "redirect:/cabinet/inspector/show";
     }
+
     @GetMapping("/unapprove/{id}")
     public String unapprove(@PathVariable(value = "id") Long id, Model model){
 
@@ -68,8 +61,23 @@ public class InspectorCabinetController {
     @GetMapping("/filterByStatus/{status}/{email}")
     public String filterByStatus(@PathVariable(value = "status") ReportStatus status, @PathVariable(value = "email") String email, Model model){
 
-        Iterable<Report> reports = reportRepository.findAllByEmailAndStatus(email, status);
+        Iterable<Report> reports = reportService.findAllByEmailAndStatus(email, status);
         model.addAttribute("reports", reports);
+        return "inspector.cabinet.show";
+    }
+
+    @GetMapping("/show/{pageNumber}")
+    public String findPaginated(@PathVariable(value = "pageNumber") int pageNumber, Model model){
+        int pageSize = 5;
+
+        Page<Report> page = reportService.findPaginated(pageNumber, pageSize);
+        List<Report> reports = page.getContent();
+
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("reports", reports);
+
         return "inspector.cabinet.show";
     }
 }
