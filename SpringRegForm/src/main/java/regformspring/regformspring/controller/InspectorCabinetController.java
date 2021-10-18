@@ -2,20 +2,14 @@ package regformspring.regformspring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import regformspring.regformspring.model.Report;
 import regformspring.regformspring.model.ReportStatus;
-import regformspring.regformspring.model.User;
-import regformspring.regformspring.repository.ReportRepository;
-import regformspring.regformspring.repository.UserRepository;
 import regformspring.regformspring.security.ReportService;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -58,10 +52,10 @@ public class InspectorCabinetController {
         return "inspector.cabinet.show";
     }
 
-    @GetMapping("/filterByStatus/{status}/{email}")
-    public String filterByStatus(@PathVariable(value = "status") ReportStatus status, @PathVariable(value = "email") String email, Model model){
+    @PostMapping("/filter")
+    public String filterByEmailAndStatus(@RequestParam String email,@RequestParam String status, Model model){
 
-        Iterable<Report> reports = reportService.findAllByEmailAndStatus(email, status);
+        Iterable<Report> reports = reportService.findAllByEmailAndStatus(email, ReportStatus.valueOf(status));
         model.addAttribute("reports", reports);
         return "inspector.cabinet.show";
     }

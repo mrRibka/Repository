@@ -1,7 +1,13 @@
 package regformspring.regformspring.model;
 
 public enum ReportStatus {
-    SENT,
-    APPROVED,
-    UNAPPROVED
+    SENT("SENT"),
+    APPROVED("APPROVED"),
+    UNAPPROVED("UNAPPROVED");
+
+    String status;
+
+    ReportStatus(String status) {
+        this.status = status;
+    }
 }

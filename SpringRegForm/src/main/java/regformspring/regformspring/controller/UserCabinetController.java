@@ -22,28 +22,19 @@ import java.util.Optional;
 @RequestMapping("/cabinet/user")
 public class UserCabinetController {
     @Autowired
-    private ReportRepository reportRepository;
-    @Autowired
     private UserRepository userRepository;
     @Autowired
     private ReportService reportService;
-
-    /*@PostMapping("/create")
-    public String postCreatePage(Model model){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Optional<User> user = userRepository.findByEmail(auth.getName());
-
-        return findPaginated(1, model);
-    }*/
 
     @PostMapping("/createRep")
     public String create(@RequestParam String description, @RequestParam String type){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userRepository.findByEmail(auth.getName());
+
         Report report = new Report(description, Type.valueOf(type));
         report.setAuthor(user.get().getFirstName(), user.get().getLastName());
         report.setEmail(user.get().getEmail());
-        reportRepository.save(report);
+        reportService.save(report);
         return "redirect:/cabinet/user/create";
     }
 
@@ -61,7 +52,7 @@ public class UserCabinetController {
             return "user.unapprove";
         }
 
-        Iterable<Report> reports = reportRepository.findAllByEmail(user.get().getEmail());
+        Iterable<Report> reports = reportService.findAllByEmail(user.get().getEmail());
         model.addAttribute("reports", reports);
         return "redirect:/cabinet/user/create";
     }

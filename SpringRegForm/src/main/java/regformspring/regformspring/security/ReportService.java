@@ -17,6 +17,10 @@ public class ReportService {
     @Autowired
     private ReportRepository reportRepository;
 
+    public void save(Report report){
+        reportRepository.save(report);
+    }
+
     public Report approveById(Long id) throws RuntimeException{
         Report report = reportRepository.findById(id).orElseThrow();
         report.setStatus(ReportStatus.APPROVED);
